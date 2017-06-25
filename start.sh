@@ -16,6 +16,11 @@ while [ "$ACCOUNTS" ] ;do
     passwd=$(printf "$password\n$password" | doveadm pw -s MD5-CRYPT -u $1)
     echo  "$account:$passwd" >> $USERS_FILE
 
+    if [ ! -d /home/$account/Maildir/ ]; then
+        mkdir /home/$account/Maildir/
+        chown smtp:smtp -R /home/$account/Maildir/
+    fi
+
     [ "$ACCOUNTS" = "$iter" ] && \
         ACCOUNTS='' || \
         ACCOUNTS="${ACCOUNTS#*,}"
